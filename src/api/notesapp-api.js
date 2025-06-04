@@ -1,5 +1,6 @@
 const BASE_URL = 'https://notes-api.dicoding.dev/v2';
-class NotesApi {
+
+export default class NotesApi {
     static async getNotes() {
         return fetch(`${BASE_URL}/notes`)
             .then((response) => {

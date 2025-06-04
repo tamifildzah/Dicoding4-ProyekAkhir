@@ -6,18 +6,20 @@ class NoteInput extends HTMLElement {
     super();
     const shadow = this.attachShadow({ mode: 'open' });
     const label = this.getAttribute('label') || '';
-    const id = this.getAttribute('id') || 'input-id';
+    const id = this.getAttribute('id') ? this.getAttribute('id') + '-input' : 'input-id';
 
     shadow.innerHTML = `
       <style>
         .container {
-        width: 100%;
+          width: 100%;
+        
         }
         label {
           margin-bottom: 6px;
           display: block;
         }
         input {
+          margin right: 24px;
           width: 100%;
           padding: 10px;
           border-radius: 5px;
@@ -37,16 +39,18 @@ class NoteTextarea extends HTMLElement {
     super();
     const shadow = this.attachShadow({ mode: 'open' });
     const label = this.getAttribute('label') || '';
-    const id = this.getAttribute('id') || 'textarea-id';
+    const id = this.getAttribute('id') ? this.getAttribute('id') + '-textarea' : 'textarea-id';
 
     shadow.innerHTML = `
       <style>
         .container {
-        width: 100%;
+          width: 100%;
+         
         }
         label {
           margin-bottom: 6px;
           display: block;
+        
         }
         textarea {
           width: 100%;
@@ -54,6 +58,7 @@ class NoteTextarea extends HTMLElement {
           border-radius: 5px;
           border: 1px solid #ccc;
           min-height: 100px;
+          margin right: 24px;
         }
       </style>
       <label for="${id}">${label}</label>
@@ -73,7 +78,7 @@ class NoteButton extends HTMLElement {
     shadow.innerHTML = `
       <style>
         .container {
-        width: 100%;
+          width: 100%;
         }
         button {
           background-color: #C95792;
@@ -113,6 +118,7 @@ class NoteCard extends HTMLElement {
           display: flex;
           flex-direction: column;
           gap: 8px;
+          position: relative;
         }
 
         .title {
@@ -129,13 +135,33 @@ class NoteCard extends HTMLElement {
           font-size: 0.8rem;
           color: #888;
         }
+
+        .delete-btn {
+          margin-top: 10px;
+          align-self: flex-end;
+          background: #e74c3c;
+          color: white;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 4px;
+          cursor: pointer;
+        }
       </style>
       <div class="card">
         <div class="title">${title}</div>
         <div class="body">${body}</div>
         <div class="date">${new Date(createdAt).toLocaleString()}</div>
+        <button class="delete-btn">Hapus</button>
       </div>
     `;
+    // Event hapus
+    this.shadowRoot.querySelector('.delete-btn').addEventListener('click', () => {
+      this.dispatchEvent(new CustomEvent('delete-note', {
+        detail: { id },
+        bubbles: true,
+       composed: true,
+      }));
+    });
   }
 }
 
