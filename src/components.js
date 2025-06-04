@@ -1,5 +1,3 @@
-// components.js
-
 // Komponen input
 class NoteInput extends HTMLElement {
   constructor() {
